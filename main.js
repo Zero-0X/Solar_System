@@ -19,6 +19,10 @@ const planetsData = [
     { name: "Neptune", diameter: 49528, distance: 4515, color: "indigo" },
 ];
 
+const moonsData = [
+    {}
+]
+
 // PREVIOUS CODE FOR CREATING DOM ELEMENTS (PLANETS) AND APPENDING THEM TO A CONTAINER (DIV)
 
 // const solarSystem = document.getElementById("solar-system");
@@ -50,7 +54,7 @@ const planetsData = [
 
 // createSolarSystem();
 
-function createSun(planetData) {
+function createPlanet(planetData) {
     const geometry = new THREE.SphereGeometry(planetData.diameter / 100, 32, 32);
     const material = new THREE.MeshBasicMaterial({ color: planetData.color });
     const planet = new THREE.Mesh(geometry, material);
@@ -66,6 +70,19 @@ function createOrbit(planetData) {
     const orbit = new THREE.Line(orbitGeometry, orbitMaterial);
     orbit.rotation.x = Math.PI / 2;
     scene.add(orbit);
+}
+
+function createMoon(moonData, parentPlanet) {
+    const geometry = new THREE.SphereGeometry(moonData.diameter / 100, 32, 32);
+    const material = new THREE.MeshBasicMaterial({ map: });
+    const moon = new THREE.Mesh(geometry, material);
+
+    const x = moonData.distance * 10;
+    const moonPosition = new THREE.Vector3(x, 0, 0);
+
+    parentPlanet.add(moon);
+
+    moon.position.copy(moonPosition);
 }
 
 // // Mercury
@@ -313,7 +330,7 @@ function createOrbit(planetData) {
 
 function animate() {
     requestAnimationFrame(animate);
-    
+
     scene.children.forEach((child) => {
         if (child.name !== 'Sun') {
             child.rotation.y += 0.005;
