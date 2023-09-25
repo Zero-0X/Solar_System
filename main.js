@@ -1,11 +1,22 @@
 import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerwidth / window.innerHeight, 0.1, 1000);
+// import textures here from imag folder
+// 
 
-const renderer = new THREE.WebGL1Renderer();
+const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, window.innerwidth / window.innerHeight, 0.1, 1000);
+const controls = new OrbitControls( camera, renderer.domElement );
+
+camera.position.set(-90, 140, 140);
+orbit.update();
+
+const ambientLight = new THREE.AmbientLight(0x333333);
+scene.add(ambientLight);
 
 const planetsData = [
     { name: "Sun", diameter: 1392700, distance: 0, color: "yellow" },
@@ -329,17 +340,13 @@ function createMoon(moonData, parentPlanet) {
 // }
 
 function animate() {
-    requestAnimationFrame(animate);
 
-    scene.children.forEach((child) => {
-        if (child.name !== 'Sun') {
-            child.rotation.y += 0.005;
-        }
-    });
-    renderer.render(scene, camera);
-};
+	requestAnimationFrame( animate );
 
-camera.position.set(0, 0, 1000);
-camera.lookAt(0, 0, 0);
+	controls.update();
+
+	renderer.render( scene, camera );
+
+}
 
 animate();
